@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#! 
 """
 Kommandos, die über ftduino.comm erteilt werden können:
     
@@ -57,7 +57,7 @@ def ftduino_scan():
     
     return devices
         
-def ftduino_find_by_name(duino:str):
+def ftduino_find_by_name(duino):
     #   sucht nach einem ftduino mit angegebenem Namen und gibt im Erfolgsfall den device-pfad zurück
     #   der device-Pfad kann beim Erzeugen eines ftduino-Objekts angegeben werden, um gezielt einen 
     #   bestimmten ftduino anzusprechen.
@@ -90,7 +90,7 @@ class ftduino(object):
     def getDevice(self):
         return self.ftduino
     
-    def comm(self, command:str):
+    def comm(self, command):
         try:
             command=command+"\n"
             self.ftduino.flushInput()
