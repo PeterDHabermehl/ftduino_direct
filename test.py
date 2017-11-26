@@ -1,6 +1,6 @@
 #! /usr/bin/python3
 
-import ftduinoDirect as ftd
+import ftduino_direct as ftd
 import time,sys
 
 

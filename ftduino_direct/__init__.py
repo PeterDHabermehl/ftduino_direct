@@ -1,35 +1,35 @@
-#! 
-"""
-Kommandos, die über ftduino.comm erteilt werden können:
-    
-    void led_set <0|1> 
-    
-    string ftduino_direct_get_version
-    uint8_t ftduino_pwm_get_max
-    char[16] ftduino_id_set <string maxlen=16>
-    char[16] ftduino_id_get
-    
+#
+#
+# Kommandos fuer ftduino.comm :
+#
+#    void led_set <0|1> 
+#    
+#    string ftduino_direct_get_version
+#    uint8_t ftduino_pwm_get_max
+#    char[16] ftduino_id_set <string maxlen=16>
+#    char[16] ftduino_id_get
+#    
+#
+#    void input_set_mode <I1..I8> <switch|resistance|voltage> 
+#    uint16_t input_get <I1..I8>
+#
+#    void output_set <O1..O8> <mode="0..2"> <pwm=[0..maxpwm]>       mode: 0=open 1=switch to plus (normal operation) 2=switch to gnd
+#    void motor_set <M1..M4> <right|left|brake> <pwm=[0..maxpwm]>
+#
+#    void ultrasonic_enable <true|false>
+#    int16_t ultrasonic_get()
+#
+#    void counter_set_mode <none|rising|falling|any>
+#    uint16_t counter_get <C1..C4>
+#    void counter_clear <C1..C4>
+#    uint8_t counter_get_state <C1..C4>
+#    
+#    Beispiel:
+#    myftd=ftduino_direct.ftduino()
+#    maxpwm = myftd.comm("ftduino_pwm_get_max")
+#    myftd.comm("motor M1 right "+str(maxpwm))
+#
 
-    void input_set_mode <I1..I8> <switch|resistance|voltage> 
-    uint16_t input_get <I1..I8>
-
-    void output_set <O1..O8> <mode="0..2"> <pwm=[0..maxpwm]>       mode: 0=open 1=switch to plus (normal operation) 2=switch to gnd
-    void motor_set <M1..M4> <right|left|brake> <pwm=[0..maxpwm]>
-
-    void ultrasonic_enable <true|false>
-    int16_t ultrasonic_get()
-
-    void counter_set_mode <none|rising|falling|any>
-    uint16_t counter_get <C1..C4>
-    void counter_clear <C1..C4>
-    uint8_t counter_get_state <C1..C4>
-    
-    Beispiel:
-    myftd=ftduino_direct.ftduino()
-    maxpwm = myftd.comm("ftduino_pwm_get_max")
-    myftd.comm("motor M1 right "+str(maxpwm))
-
-"""
 
 import serial
 import serial.tools.list_ports
@@ -37,9 +37,11 @@ import time
 
 FTDUINO_VIDPID="1c40:0538"
 
+__all__ = ["ftduino_scan", "ftduino_find_by_name", "ftduino"]
+
 def ftduino_scan():
-    #   scannt nach ftduinos und gibt eine Liste zurück, die den device-pfad und die vom ftduino zurückgemeldete ID beinhaltet
-    #   [x][0] enthält den device-pfad, [x][1] die ID 
+    #   scannt nach ftduinos und gibt eine Liste zurueck, die den device-pfad und die vom ftduino zurueckgemeldete ID beinhaltet
+    #   [x][0] enthaelt den device-pfad, [x][1] die ID 
     #
     devices = []
     try:
@@ -58,7 +60,7 @@ def ftduino_scan():
     return devices
         
 def ftduino_find_by_name(duino):
-    #   sucht nach einem ftduino mit angegebenem Namen und gibt im Erfolgsfall den device-pfad zurück
+    #   sucht nach einem ftduino mit angegebenem Namen und gibt im Erfolgsfall den device-pfad zurueck
     #   der device-Pfad kann beim Erzeugen eines ftduino-Objekts angegeben werden, um gezielt einen 
     #   bestimmten ftduino anzusprechen.
     d=ftduino_scan()
@@ -72,7 +74,7 @@ class ftduino(object):
     def __init__(self, device=None):
         self.ftduino=None
         
-        # bei Angabe eines device-Pfades wird versucht, diesen ftduino zu öffnen
+        # bei Angabe eines device-Pfades wird versucht, diesen ftduino zu oeffnen
         # ansonsten wird der erste gefundene ftduino angesprochen
         
         try:
