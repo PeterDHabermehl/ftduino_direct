@@ -31,5 +31,19 @@ You might open the Arduino IDE serial console and issue the command "LED_set 1" 
 
 See test.py on how to use...
 
-You might execute all functions provided by [Till Harbaum's sketch library](https://github.com/harbaum/ftduino/tree/master/ftduino/libraries/Ftduino) using the .comm method of ftduino_direct.py.
+You might execute all functions provided by [Till Harbaum's sketch library](https://github.com/harbaum/ftduino/tree/master/ftduino/libraries/Ftduino) using the .comm method of ftduino_direct.py, namely:
+    
+    void input_set_mode(uint8_t ch, uint8_t mode);
+    uint16_t input_get(uint8_t ch);
+
+    void output_set(uint8_t port, uint8_t mode, uint8_t pwm);
+    void motor_set(uint8_t port, uint8_t mode, uint8_t pwm);
+
+    void ultrasonic_enable(bool ena);
+    int16_t ultrasonic_get();
+
+    void counter_set_mode(uint8_t ch, uint8_t mode);
+    uint16_t counter_get(uint8_t ch);
+    void counter_clear(uint8_t ch);
+    bool counter_get_state(uint8_t ch);
 
