@@ -6,9 +6,8 @@ from setuptools import setup, find_packages
 setup(
     name='ftduino_direct',
     version='1.0.3',
-    packages=find_packages(),
+    packages=['ftduino_direct'],
     install_requires=['pyserial'],
-    zip_safe=False,
     include_package_data=True,
     author="Peter Habermehl",
     author_email="peter.habermehl@gmx.de",
