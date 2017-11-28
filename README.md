@@ -30,3 +30,6 @@ You might open the Arduino IDE serial console and issue the command "LED_set 1" 
 ## Use
 
 See test.py on how to use...
+
+You might execute all functions provided by [Till Harbaum's sketch library](https://github.com/harbaum/ftduino/tree/master/ftduino/libraries/Ftduino) using the .comm method of ftduino_direct.py.
+
