@@ -8,7 +8,7 @@ setup(
     version='1.0.3',
     packages=['ftduino_direct'],
     install_requires=['pyserial'],
-    include_package_data=True,
+    include_package_data=False,
     author="Peter Habermehl",
     author_email="peter.habermehl@gmx.de",
     description="A python library to access the ftduino controller via USB",
