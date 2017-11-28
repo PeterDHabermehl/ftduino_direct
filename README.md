@@ -2,7 +2,7 @@
 An arduino sketch and Python3 library to access the ftduino hardware
 
 ## What is it?
-The [ftduino](https://github.com/harbaum/ftduino) is an Arduino based Microcontroller intended to be used in combination with the (fischertechnik)[http://www.fischertechnik.de/] robotics range of construction kits, as you already might know since you're here...
+The [ftduino](https://github.com/harbaum/ftduino) is an Arduino based Microcontroller intended to be used in combination with the [fischertechnik](http://www.fischertechnik.de/) robotics range of construction kits, as you already might know since you're here...
 
 The ftduino can be programmed using the Arduino IDE according to the instructions to be found at the ftduino repository.
 
