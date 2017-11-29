@@ -8,7 +8,7 @@
 #include <EEPROM.h>
 #include <Ftduino.h>
 
-#define FTDUINODIRECTVERSION "0.9.1"
+#define FTDUINODIRECTVERSION "0.9.3"
 #define MAX_CMD 32
 #define BURGER 0xdeadbeef
 
@@ -153,6 +153,9 @@ void loop() {
                 else if(parm2[0]=='r' or parm2[0]=='R') {
                   dir=Ftduino::RIGHT;  
                 }
+                else if(parm2[0]=='b' or parm2[0]=='B') {
+                  dir=Ftduino::BRAKE;  
+                }
                 
                 ftduino.motor_set(motor, dir, pwm);
                 success=1;
@@ -219,10 +222,13 @@ void loop() {
             case 'r': mode=0; break;
             case 'v': mode=1; break;
             case 's': mode=2; break;
+            case 'R': mode=0; break;
+            case 'V': mode=1; break;
+            case 'S': mode=2; break;
             default: mode=99;
             }
 
-            if((inp!=99) && (mode != 99) && (parm[0]=='i')) {
+            if((inp!=99) && (mode != 99) && ((parm[0]=='i') || (parm[0]=='I') )) {
               ftduino.input_set_mode(inp, mode);
               success=1;
             }           
@@ -244,7 +250,7 @@ void loop() {
           default: inp=99;
           }
 
-          if((inp!=99) && parm[0]=='i') {
+          if((inp!=99) && ((parm[0]=='i') || (parm[0]=='I') )) {
             Serial.println(ftduino.input_get(inp));
             success=2;
           }
@@ -276,7 +282,7 @@ void loop() {
             default: mode=99; success=0;
             }
 
-            if((inp!=99) && (mode != 99) && (parm[0]=='c')) {
+            if((inp!=99) && (mode != 99) && ((parm[0]=='c') || (parm[0]=='C'))) {
               ftduino.counter_set_mode(inp, mode);
               success=1;
             }           
@@ -294,7 +300,7 @@ void loop() {
           default: inp=99;
           }
 
-          if((inp!=99) && (parm[0]=='c')) {
+          if((inp!=99) && ((parm[0]=='c') || (parm[0]=='C'))) {
             Serial.println(ftduino.counter_get(inp));
             success=2;
           }    
@@ -311,7 +317,7 @@ void loop() {
           default: inp=99;
           }
 
-          if((inp!=99) && (parm[0]=='c')) {
+          if((inp!=99) && ((parm[0]=='c') || (parm[0]=='C'))) {
             ftduino.counter_clear(inp);
             success=1;
           }
@@ -329,7 +335,7 @@ void loop() {
             default: inp=99;
             }
   
-            if((inp!=99) && (parm[0]=='c')) {
+            if((inp!=99) && ((parm[0]=='c') || (parm[0]=='C'))) {
               Serial.println(ftduino.counter_get_state(inp));
               success=2;
             }
