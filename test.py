@@ -29,11 +29,8 @@ else:
 if myftd.getDevice() != None:
     print("Habe den ftduino mit Namen '" + myftd.comm("ftduino_id_get") + "' gefunden!")
     
-    maxpwm = myftd.comm("ftduino_pwm_get_max")  
-    print("Maximal möglicher pwm-Wert:", maxpwm)
-    
     print("Motor M1 links mit voller Leistung")
-    myftd.comm("motor_set M1 left "+str(maxpwm))
+    myftd.comm("motor_set M1 left 512")
           
     for n in range(0,3):
         myftd.comm("LED_set 1")
@@ -42,7 +39,7 @@ if myftd.getDevice() != None:
         time.sleep(0.5)
     
     print("Motor M1 rechts mit voller Leistung")
-    myftd.comm("motor_set M1 right "+str(maxpwm))
+    myftd.comm("motor_set M1 right 512")
     
     for n in range(0,3):
         myftd.comm("LED_set 1")

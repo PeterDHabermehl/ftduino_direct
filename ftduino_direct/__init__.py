@@ -5,7 +5,6 @@
 #    void led_set <0|1> 
 #    
 #    string ftduino_direct_get_version
-#    uint8_t ftduino_pwm_get_max
 #    char[16] ftduino_id_set <string maxlen=16>
 #    char[16] ftduino_id_get
 #    
@@ -13,8 +12,8 @@
 #    void input_set_mode <I1..I8> <switch|resistance|voltage> 
 #    uint16_t input_get <I1..I8>
 #
-#    void output_set <O1..O8> <mode="0..2"> <pwm=[0..maxpwm]>       mode: 0=open 1=switch to plus (normal operation) 2=switch to gnd
-#    void motor_set <M1..M4> <right|left|brake> <pwm=[0..maxpwm]>
+#    void output_set <O1..O8> <mode="0..2"> <pwm=[0..512]>       mode: 0=open 1=switch to plus (normal operation) 2=switch to gnd
+#    void motor_set <M1..M4> <right|left|brake> <pwm=[0..512]>
 #
 #    void ultrasonic_enable <true|false>
 #    int16_t ultrasonic_get()
@@ -26,8 +25,7 @@
 #    
 #    Beispiel:
 #    myftd=ftduino_direct.ftduino()
-#    maxpwm = myftd.comm("ftduino_pwm_get_max")
-#    myftd.comm("motor M1 right "+str(maxpwm))
+#    myftd.comm("motor M1 right 512")
 #
 
 

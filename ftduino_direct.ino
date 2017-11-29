@@ -8,7 +8,7 @@
 #include <EEPROM.h>
 #include <Ftduino.h>
 
-#define FTDUINODIRECTVERSION "0.9.3"
+#define FTDUINODIRECTVERSION "0.9.4"
 #define MAX_CMD 32
 #define BURGER 0xdeadbeef
 
@@ -98,11 +98,6 @@ void loop() {
            success=2;
         }
 
-        else if(cmd == "ftduino_pwm_get_max") {
-           Serial.println(Ftduino::MAX);
-           success=2;
-        }
-
         else if((cmd == "ftduino_id_set") && parm){
           strncpy(ftd_conf.ftd_name, parm, 17);
           ftd_conf.ftd_name[16]=0;
@@ -139,7 +134,7 @@ void loop() {
             if(strchr(parm2, ' ')) {
               parm3 = strchr(parm2, ' ')+1;
               *strchr(parm2, ' ') = '\0';
-              int pwm = min(max(0,atoi(parm3)),Ftduino::MAX);
+              int pwm = min(max(0,atoi(parm3)),512)/512*Ftduino::MAX;
 
               if(parm[0]=='M' or parm[0]=='m'){
                 char n[1];
@@ -155,7 +150,7 @@ void loop() {
                 }
                 else if(parm2[0]=='b' or parm2[0]=='B') {
                   dir=Ftduino::BRAKE;  
-                }
+                }            
                 
                 ftduino.motor_set(motor, dir, pwm);
                 success=1;
@@ -175,7 +170,7 @@ void loop() {
             if(strchr(parm2, ' ')) {
               parm3 = strchr(parm2, ' ')+1;
               *strchr(parm2, ' ') = '\0';
-              int pwm = min(max(0,atoi(parm3)),Ftduino::MAX);
+              int pwm = min(max(0,atoi(parm3)),512)/512*Ftduino::MAX;
 
               if(parm[0]=='O' or parm[0]=='o'){
                 char n[1];
