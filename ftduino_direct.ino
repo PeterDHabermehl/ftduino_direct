@@ -8,7 +8,7 @@
 #include <EEPROM.h>
 #include <Ftduino.h>
 
-#define FTDUINODIRECTVERSION "0.9.4"
+#define FTDUINODIRECTVERSION "0.9.5"
 #define MAX_CMD 32
 #define BURGER 0xdeadbeef
 
@@ -274,6 +274,10 @@ void loop() {
             case 'r': mode=1; break;
             case 'f': mode=2; break;
             case 'a': mode=3; break;
+            case 'N': mode=0; break;
+            case 'R': mode=1; break;
+            case 'F': mode=2; break;
+            case 'A': mode=3; break;
             default: mode=99; success=0;
             }
 
