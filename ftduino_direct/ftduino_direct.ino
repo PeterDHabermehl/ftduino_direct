@@ -142,7 +142,7 @@ void loop() {
             if(strchr(parm2, ' ')) {
               parm3 = strchr(parm2, ' ')+1;
               *strchr(parm2, ' ') = '\0';
-              int pwm = min(max(0,atoi(parm3)),512)/512*Ftduino::MAX;
+              int pwm = min(max(0,atoi(parm3)),512)*Ftduino::MAX/512;
 
               if(parm[0]=='m'){
                 char n[1];
@@ -178,7 +178,7 @@ void loop() {
             if(strchr(parm2, ' ')) {
               parm3 = strchr(parm2, ' ')+1;
               *strchr(parm2, ' ') = '\0';
-              int pwm = min(max(0,atoi(parm3)),512)/512*Ftduino::MAX;
+              int pwm = min(max(0,atoi(parm3)),512)*Ftduino::MAX/512;
 
               if(parm[0]=='o'){
                 char n[1];
