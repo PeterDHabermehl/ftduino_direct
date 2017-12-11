@@ -12,7 +12,7 @@ To access the ftduino hardware via Python, the ftduino_direct project provides a
 ### Arduino sketch
 *First*, follow the instructions found at the [ftduino](https://github.com/harbaum/ftduino) homepage to install the Arduino IDE and set it up to be used with the ftduino.
 
-*Second*, [download](https://github.com/PeterDHabermehl/ftduino_direct/raw/master/ftduino_direct.ino) the ftduino_direct.ino sketch.
+*Second*, [download](https://github.com/PeterDHabermehl/ftduino_direct/raw/master/ftduino_direct/ftduino_direct.ino) the ftduino_direct.ino sketch.
 
 *Third*, open the ftduino_direct.ino sketch into the ftduino IDE and upload it to your ftduino.
 
@@ -25,7 +25,7 @@ You might open the Arduino IDE serial console and issue the command "LED_set 1" 
 
 *Second* open a shell window, cd into the unpack directory and issue the command 'sudo python3 setup.py install'. The package will now be installed to your system.
 
-*Third* get the [test.py](https://github.com/PeterDHabermehl/ftduino_direct/raw/master/test.py) Python script and run it. It will  switch on a motor connected to M1 of the ftduino and flash the red LED.
+*Third* get the [test.py](https://github.com/PeterDHabermehl/ftduino_direct/raw/master/python/test.py) Python script and run it. It will  switch on a motor connected to M1 of the ftduino and flash the red LED.
 
 ## Use
 
