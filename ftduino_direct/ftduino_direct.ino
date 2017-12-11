@@ -8,7 +8,7 @@
 #include <EEPROM.h>
 #include <Ftduino.h>
 
-#define FTDUINODIRECTVERSION "0.9.6"
+#define FTDUINODIRECTVERSION "0.9.7"
 #define MAX_CMD 32
 #define BURGER 0xdeadbeef
 
@@ -135,7 +135,7 @@ void loop() {
           char *parm2 = NULL;
           char *parm3 = NULL;
           uint8_t dir = 3;
-
+          
           if(strchr(parm, ' ')) {
             parm2 = strchr(parm, ' ')+1;
             *strchr(parm, ' ') = '\0';
@@ -144,24 +144,18 @@ void loop() {
               *strchr(parm2, ' ') = '\0';
               int pwm = min(max(0,atoi(parm3)),512)*Ftduino::MAX/512;
 
-              if(parm[0]=='m'){
-                char n[1];
-                n[0]=parm[1]; n[1]="/0";
-                 
-                uint8_t motor = min(max(1,atoi(n)),4)-1;
+              if(parm[0]=='m'){                 
+                uint8_t motor = parm[1]-49;
                 
-                if (parm2[0]=='l') {
-                  dir=Ftduino::LEFT;  
-                }
-                else if(parm2[0]=='r') {
-                  dir=Ftduino::RIGHT;  
-                }
-                else if(parm2[0]=='b') {
-                  dir=Ftduino::BRAKE;  
+                switch (parm2[0]) {
+                case 'l': dir=Ftduino::LEFT; break; 
+                case 'r': dir=Ftduino::RIGHT; break;  
+                case 'b': dir=Ftduino::BRAKE; break; 
                 }            
-                
-                ftduino.motor_set(motor, dir, pwm);
-                success=1;
+                if ((motor>-1)&&(motor<4)) {
+                  ftduino.motor_set(motor, dir, pwm);
+                  success=1;
+                }
               }
             }
           }       
@@ -181,10 +175,7 @@ void loop() {
               int pwm = min(max(0,atoi(parm3)),512)*Ftduino::MAX/512;
 
               if(parm[0]=='o'){
-                char n[1];
-                n[0]=parm[1]; n[1]="/0";
-                
-                uint8_t motor = min(max(1,atoi(n)),8)-1;
+                uint8_t output = parm[1]-49;
                 
                 if (parm2[0]=='1') {
                   mode=1;  
@@ -192,9 +183,10 @@ void loop() {
                 else if(parm2[0]=='2') {
                   mode=2;  
                 }
-                
-                ftduino.output_set(motor, mode, pwm);
-                success=1;
+                if ((output>-1)&&(output<8)) {
+                  ftduino.output_set(output, mode, pwm);
+                  success=1;
+                }
               }
             }
           }        
@@ -202,24 +194,12 @@ void loop() {
 
         else if((cmd == "input_set_mode") && parm) {
           char *parm2 = NULL;
-          
+  
           if(strchr(parm, ' ')) {
-            uint8_t inp=0;
+            uint8_t inp=parm[1]-49;
             uint8_t mode=0;
             parm2 = strchr(parm, ' ')+1;
             *strchr(parm, ' ') = '\0';
-            
-            switch (parm[1]) {
-            case '1': inp=0; break;
-            case '2': inp=1; break;
-            case '3': inp=2; break;
-            case '4': inp=3; break;
-            case '5': inp=4; break;
-            case '6': inp=5; break;
-            case '7': inp=6; break;
-            case '8': inp=7; break;
-            default: inp=99;
-            }
             
             switch (parm2[0]) {
             case 'r': mode=0; break;
@@ -228,7 +208,7 @@ void loop() {
             default: mode=99;
             }
 
-            if((inp!=99) && (mode != 99) && (parm[0]=='i')) {
+            if((inp>-1) && (inp<8) && (mode != 99) && (parm[0]=='i')) {
               ftduino.input_set_mode(inp, mode);
               success=1;
             }           
@@ -236,21 +216,9 @@ void loop() {
         }
         
         else if((cmd == "input_get") && parm) {          
-          uint8_t inp=0;          
-
-          switch (parm[1]) {
-          case '1': inp=0; break;
-          case '2': inp=1; break;
-          case '3': inp=2; break;
-          case '4': inp=3; break;
-          case '5': inp=4; break;
-          case '6': inp=5; break;
-          case '7': inp=6; break;
-          case '8': inp=7; break;
-          default: inp=99;
-          }
-
-          if((inp!=99) && (parm[0]=='i')) {
+          uint8_t inp=parm[1]-49;
+       
+          if((inp>-1) && (inp<8) && (parm[0]=='i')) {
             Serial.println(ftduino.input_get(inp));
             success=2;
           }
@@ -259,30 +227,22 @@ void loop() {
 
         else if((cmd == "counter_set_mode") && parm) {
           char *parm2 = NULL;
-          
+ 
           if(strchr(parm, ' ')) {
-            uint8_t inp=0;
+            uint8_t inp=parm[1]-49;
             uint8_t mode=0;
             parm2 = strchr(parm, ' ')+1;
-            *strchr(parm, ' ') = '\0';
-            
-            switch (parm[1]) {
-            case '1': inp=0; break;
-            case '2': inp=1; break;
-            case '3': inp=2; break;
-            case '4': inp=3; break;
-            default: inp=99; success=0;
-            }
+            // *strchr(parm, ' ') = '\0';
             
             switch (parm2[0]) {
             case 'n': mode=0; break;
             case 'r': mode=1; break;
             case 'f': mode=2; break;
             case 'a': mode=3; break;
-            default: mode=99; success=0;
+            default: mode=99; 
             }
 
-            if((inp!=99) && (mode != 99) && (parm[0]=='c')) {
+            if((inp>-1) && (inp<8) && (mode != 99) && (parm[0]=='c')) {
               ftduino.counter_set_mode(inp, mode);
               success=1;
             }           
@@ -290,34 +250,18 @@ void loop() {
         }
         
         else if((cmd == "counter_get") && parm) {          
-          uint8_t inp=0;
-   
-          switch (parm[1]) {
-          case '1': inp=0; break;
-          case '2': inp=1; break;
-          case '3': inp=2; break;
-          case '4': inp=3; break;
-          default: inp=99;
-          }
+          uint8_t inp=parm[1]-49;
 
-          if((inp!=99) && (parm[0]=='c')) {
+          if((inp>-1) && (inp<4) && (parm[0]=='c')) {
             Serial.println(ftduino.counter_get(inp));
             success=2;
           }    
         }
 
         else if((cmd == "counter_clear") && parm) {          
-          uint8_t inp=0;
-          
-          switch (parm[1]) {
-          case '1': inp=0; break;
-          case '2': inp=1; break;
-          case '3': inp=2; break;
-          case '4': inp=3; break;
-          default: inp=99;
-          }
+          uint8_t inp=parm[1]-49;
 
-          if((inp!=99) && (parm[0]=='c')) {
+          if((inp>-1) && (inp<4) && (parm[0]=='c')) {
             ftduino.counter_clear(inp);
             success=1;
           }
@@ -325,17 +269,9 @@ void loop() {
         }
 
         else if((cmd == "counter_get_state") && parm) {          
-          uint8_t inp=0;
-          
-            switch (parm[1]) {
-            case '1': inp=0; break;
-            case '2': inp=1; break;
-            case '3': inp=2; break;
-            case '4': inp=3; break;
-            default: inp=99;
-            }
-  
-            if((inp!=99) && (parm[0]=='c')) {
+          uint8_t inp=parm[1]-49;
+
+          if((inp>-1) && (inp<4) && (parm[0]=='c')) {
               Serial.println(ftduino.counter_get_state(inp));
               success=2;
             }
