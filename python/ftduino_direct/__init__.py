@@ -100,9 +100,9 @@ class ftduino(object):
             if data:
                 return data.decode("utf-8")[:-2]
             else: 
-                return False
+                return "Fail"
         except:
-            return False
+            return "Fail"
     
     def close(self):
         self.ftduino.close()
