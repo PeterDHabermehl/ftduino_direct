@@ -8,7 +8,7 @@
 #include <EEPROM.h>
 #include <Ftduino.h>
 
-#define FTDUINODIRECTVERSION "0.9.7"
+#define FTDUINODIRECTVERSION "1.0.0"
 #define MAX_CMD 32
 #define BURGER 0xdeadbeef
 
@@ -18,7 +18,7 @@ struct ftd_settings {
           char ftd_name[17];
 };
 
-ftd_settings ftd_conf = { 0, 42, "ftduino\0"};
+ftd_settings ftd_conf = { 0, 42, "ftDuino\0"};
 
 char rxCur = 0;
 char rxBuf[MAX_CMD+1]; // an array to store the received data + Nullbyte
@@ -320,7 +320,7 @@ bool ftd_readconf() {
     else {
       ftd_conf.ftd_eeprom_marker=BURGER;
       ftd_conf.ftd_i2c_address=42;
-      strcpy(ftd_conf.ftd_name, "ftduino\0");
+      strcpy(ftd_conf.ftd_name, "ftDuino\0");
       EEPROM.put(0,ftd_conf);
       return false;
     }
