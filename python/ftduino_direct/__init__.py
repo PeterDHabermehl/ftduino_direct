@@ -116,7 +116,7 @@ class ftduino(object):
             self.ftduino.write(command.encode("utf-8"))
             data = self.ftduino.readline()
             if data:
-                if len(data.decode("utf-8")>2: return data.decode("utf-8")[:-2]
+                if len(data.decode("utf-8"))>2: return data.decode("utf-8")[:-2]
                 return "Fail"
             else: 
                 return "Fail"
