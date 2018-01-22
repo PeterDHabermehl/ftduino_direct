@@ -8,7 +8,7 @@
 #include <EEPROM.h>
 #include <Ftduino.h>
 
-#define FTDUINODIRECTVERSION "1.0.0"
+#define FTDUINODIRECTVERSION "1.1.0"
 #define MAX_CMD 32
 #define BURGER 0xdeadbeef
 
@@ -160,7 +160,74 @@ void loop() {
             }
           }       
         }
-
+        
+        else if((cmd == "motor_counter") && parm) {
+          char *parm2 = NULL;
+          char *parm3 = NULL;
+          char *parm4 = NULL;
+          uint8_t dir = 3;
+          
+          if(strchr(parm, ' ')) {
+            parm2 = strchr(parm, ' ')+1;
+            *strchr(parm, ' ') = '\0';
+            if(strchr(parm2, ' ')) {
+              parm3 = strchr(parm2, ' ')+1;
+              *strchr(parm2, ' ') = '\0';
+              if(strchr(parm3, ' ')) {
+                parm4 = strchr(parm3, ' ')+1;
+                *strchr(parm3, ' ') = '\0';
+                
+                int pwm = min(max(0,atoi(parm3)),512)*Ftduino::MAX/512;
+  
+                if(parm[0]=='m'){                 
+                  uint8_t motor = parm[1]-49;
+                  
+                  switch (parm2[0]) {
+                  case 'l': dir=Ftduino::LEFT; break; 
+                  case 'r': dir=Ftduino::RIGHT; break;  
+                  case 'b': dir=Ftduino::BRAKE; break; 
+                  }            
+                  if ((motor>-1)&&(motor<4)) {
+                    ftduino.motor_counter(motor, dir, pwm, atoi(parm4));
+                    success=1;
+                  }
+                }
+              }
+            }
+          }       
+        }
+        
+        else if((cmd == "motor_counter_active") && parm) {
+          if(parm[0]=='m'){                 
+            uint8_t motor = parm[1]-49; 
+            if ((motor>-1)&&(motor<4)) {
+              if(ftduino.motor_counter_active(motor)) {
+                Serial.println(1);
+              }
+              else {
+                Serial.println(0);
+              }
+              success=2;  
+            }
+          }       
+        }
+        
+        else if((cmd == "motor_counter_set_brake") && parm) {
+          char *parm2 = NULL;
+          if(strchr(parm, ' ')) {
+            parm2 = strchr(parm, ' ')+1;
+            *strchr(parm, ' ') = '\0';
+            *strchr(parm2, ' ') = '\0';
+            if(parm[0]=='m'){                 
+              uint8_t motor = parm[1]-49;
+              switch (parm2[0]) {
+              case 't': ftduino.motor_counter_set_brake(motor, true); success=1; break; 
+              case 'f': ftduino.motor_counter_set_brake(motor, false); success=1; break;  
+              }            
+            }
+          }       
+        }
+        
         else if((cmd == "output_set") && parm) {
           char *parm2 = NULL;
           char *parm3 = NULL;
