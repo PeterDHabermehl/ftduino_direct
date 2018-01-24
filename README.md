@@ -38,6 +38,9 @@ You might execute all functions provided by [Till Harbaum's sketch library](http
 
     void output_set(uint8_t port, uint8_t mode, uint8_t pwm);
     void motor_set(uint8_t port, uint8_t mode, uint8_t pwm);
+    void motor_counter(uint8_t port, uint8_t mode, uint8_t pwm, uint16_t counter);
+    bool motor_counter_active(uint8_t port);
+    void motor_counter_set_brake(uint8_t port, bool on);
 
     void ultrasonic_enable(bool ena);
     int16_t ultrasonic_get();
