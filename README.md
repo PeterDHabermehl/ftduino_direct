@@ -21,7 +21,7 @@ Your ftduino is now ready. It will indicate this by flashing the internal red LE
 You might open the Arduino IDE serial console and issue the command "LED_set 1" to switch on the internal red LED of the ftduino. "LED_set 0" turns the LED off again. Make sure to set the serial console to "CR" to issue a CR code on pressing Return or Enter, otherwise your commands will not be sent.
 
 ### Python module
-*First* [download](https://github.com/PeterDHabermehl/ftduino_direct/raw/master/ftduino_direct-1.0.5.tar.gz) the Python Package and untar the file.
+*First* [download](https://github.com/PeterDHabermehl/ftduino_direct/raw/master/ftduino_direct-1.0.8.tar.gz) the Python Package and untar the file.
 
 *Second* open a shell window, cd into the unpack directory and issue the command 'sudo python3 setup.py install'. The package will now be installed to your system.
 
