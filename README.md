@@ -1,16 +1,21 @@
 # ftduino_direct
-An arduino sketch and Python3 library to access the ftduino hardware
+An arduino sketch and Python3 library to access the ftDuino hardware
 
 ## What is it?
-The [ftduino](https://github.com/harbaum/ftduino) is an Arduino based Microcontroller intended to be used in combination with the [fischertechnik](http://www.fischertechnik.de/) robotics range of construction kits, as you already might know since you're here...
+The [ftDuino](https://ftduino.de) is an Arduino based Microcontroller intended to be used in combination with the [fischertechnik](http://www.fischertechnik.de/) robotics range of construction kits, as you already might know since you're here...
 
-The ftduino can be programmed using the Arduino IDE according to the instructions to be found at the ftduino repository.
+The ftDuino can be programmed using the Arduino IDE according to the instructions to be found at the ftDuino repository.
 
-To access the ftduino hardware via Python, the ftduino_direct project provides a ftduino Arduino sketch (ftduino_direct.ino) and a Python module (ftduino_direct) to communicate to the ftduino via USB.
+To access the ftDuino hardware via Python, the ftduino_direct project provides a ftDuino Arduino sketch (ftduino_direct.ino) and a Python module (ftduino_direct) to communicate to the ftduino via USB.
 
 ## Installation
 ### Arduino sketch
-*First*, follow the instructions found at the [ftduino](https://github.com/harbaum/ftduino) homepage to install the Arduino IDE and set it up to be used with the ftduino.
+
+If you use the ftDuino in conjunction with a fischertechnik TXT controller running the [community firmware](https://cfw.ftcommunity.de/) or a [TX-Pi](https://github.com/harbaum/tx-pi), you simply might get the App ["ftDuinIO"](https://github.com/PeterDHabermehl/ftDuinIO) from the app store. It allows to flash a pre-compiled binary of the sketch. Just select it within the app.
+
+**Alternately and without a device running the community firmware:**
+
+*First*, follow the instructions found at the [ftDuino](https://ftduino.de) homepage to install the Arduino IDE and set it up to be used with the ftduino.
 
 *Second*, [download](https://github.com/PeterDHabermehl/ftduino_direct/raw/master/ftduino_direct/ftduino_direct.ino) the ftduino_direct.ino sketch.
 
