@@ -90,4 +90,4 @@ to turn off
 
     pwm_set "channel" 0 4096
     
-**The command "pwm_halt" turns off all 16 channels at once.
+**The command "pwm_halt" turns off all 16 channels at once.**
