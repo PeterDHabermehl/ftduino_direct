@@ -1,6 +1,10 @@
 # ftduino_direct
 An arduino sketch and Python3 library to access the ftDuino hardware
 
+## What's new?
+
+**sketch v1.2 (2018-12-18):** added support for PCA9685 based I2C servo shields. See "Use" below for details.
+
 ## What is it?
 The [ftDuino](https://ftduino.de) is an Arduino based Microcontroller intended to be used in combination with the [fischertechnik](http://www.fischertechnik.de/) robotics range of construction kits, as you already might know since you're here...
 
@@ -55,3 +59,20 @@ You might execute all functions provided by [Till Harbaum's sketch library](http
     void counter_clear(uint8_t ch);
     bool counter_get_state(uint8_t ch);
 
+## Servo/Pwm control
+Connect a PCA9685 based I2C servo shield to ftDuino's I2C port.
+
+Only I2C address 0x40 supported, only one shield. pwm frequency is 60Hz fixed. 
+The new command to address a PWM port: **pwm_set <port no.> <pulse high start> <pulse high end>**
+with    <port no.>     Number of the pwm/servo port of the shield, starts at 0 up to num.ports-1, so 0..15 for 16 channels.
+        <pulse high start>  Start of the high pulse in x/4096, usually "0"
+        <pulse high end>    End of the high pulse in x/4096
+As the servo shield resolves a pwm pulse in 12 bit and the high level of the pwm signal usually starts at 0, a duty cycle of 5% on channel 0 could be set like:
+    **pwm_set 0 0 205** because 4096 * 0,05 = 204,8
+Accordingly 12.5%:
+    **pwm_set 0 0 512** (4096 * 0.125 = 512)
+
+To turn on a channel with 100%, issue
+    **pwm_set <channel> 4096 0**
+to turn off
+    **pwm_set <channel> 0 4096**
