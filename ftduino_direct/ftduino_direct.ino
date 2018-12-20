@@ -11,7 +11,7 @@
 
 Adafruit_PWMServoDriver pwm1 = Adafruit_PWMServoDriver(0x40);
 
-#define FTDUINODIRECTVERSION "1.2.0"
+#define FTDUINODIRECTVERSION "1.2.1"
 #define MAX_CMD 32
 #define BURGER 0xdeadbeef
 
@@ -395,6 +395,13 @@ void loop() {
               success=1;
             }
           }
+        }
+
+        else if(cmd == "pwm_halt") {
+          for (int i=0; i<15; i++) {
+             pwm1.setPWM(i, 4096, 0);
+          }
+          success=1;
         }
         
         // Abschließende Rückmeldung
