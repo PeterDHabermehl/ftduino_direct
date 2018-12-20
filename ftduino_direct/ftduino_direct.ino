@@ -7,8 +7,11 @@
 
 #include <EEPROM.h>
 #include <Ftduino.h>
+#include <Adafruit_PWMServoDriver.h>
 
-#define FTDUINODIRECTVERSION "1.1.0"
+Adafruit_PWMServoDriver pwm1 = Adafruit_PWMServoDriver(0x40);
+
+#define FTDUINODIRECTVERSION "1.2.0"
 #define MAX_CMD 32
 #define BURGER 0xdeadbeef
 
@@ -23,6 +26,13 @@ ftd_settings ftd_conf = { 0, 42, "ftDuino\0"};
 char rxCur = 0;
 char rxBuf[MAX_CMD+1]; // an array to store the received data + Nullbyte
 
+// servo min & max pwm, < 4096
+int smin = 200;
+int smax = 510;
+
+// pwm frequency in Hz
+int freq = 60;
+
 
 bool ok = true;
 
@@ -31,6 +41,10 @@ bool ok = true;
 void setup() {
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(LED_BUILTIN, OUTPUT);
+
+  // init servo driver
+  pwm1.begin();
+  pwm1.setPWMFreq(freq);
   
   Serial.begin(115200);  // seriellen USB-Port öffnen
 
@@ -359,6 +373,28 @@ void loop() {
         else if(cmd == "ultrasonic_get") {
           Serial.println(ftduino.ultrasonic_get());
           success=2;
+        }
+
+        // I2C-Servo Shield Funktionen ab hier
+        
+        else if((cmd == "pwm_set") && parm) {
+          char *parm2 = NULL;
+          char *parm3 = NULL;
+         
+          if(strchr(parm, ' ')) {
+            parm2 = strchr(parm, ' ')+1;
+            *strchr(parm, ' ') = '\0';
+            if(strchr(parm2, ' ')) {
+              parm3 = strchr(parm2, ' ')+1;
+              *strchr(parm2, ' ') = '\0';
+           
+              pwm1.setPWM(max(min(atoi(parm),15),0),
+                max(min(atoi(parm2),4096),0),
+                max(min(atoi(parm3),4096),0) );
+     
+              success=1;
+            }
+          }
         }
         
         // Abschließende Rückmeldung
