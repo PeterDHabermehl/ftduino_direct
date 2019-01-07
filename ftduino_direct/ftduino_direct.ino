@@ -1,3 +1,5 @@
+
+
 /*
  * ftduino-direct 
  * A ftduino sketch to provide direct control of the hw i/o
@@ -8,11 +10,12 @@
 #include <EEPROM.h>
 #include <Ftduino.h>
 #include <Adafruit_PWMServoDriver.h>
+#include <Wire.h>
 
 Adafruit_PWMServoDriver pwm1 = Adafruit_PWMServoDriver(0x40);
 
-#define FTDUINODIRECTVERSION "1.2.1"
-#define MAX_CMD 32
+#define FTDUINODIRECTVERSION "1.3.1"
+#define MAX_CMD 142
 #define BURGER 0xdeadbeef
 
 struct ftd_settings {
@@ -45,8 +48,10 @@ void setup() {
   // init servo driver
   pwm1.begin();
   pwm1.setPWMFreq(freq);
+  Wire.begin();
   
   Serial.begin(115200);  // seriellen USB-Port öffnen
+
 
   // warte auf PC-Kommunikation
   while(!Serial) {
@@ -65,7 +70,7 @@ void setup() {
   else {
     Serial.println("Config created!");     
   }
-  */
+  */  
   
   ftduino.init();
 }
@@ -375,7 +380,9 @@ void loop() {
           success=2;
         }
 
+        //
         // I2C-Servo Shield Funktionen ab hier
+        //
         
         else if((cmd == "pwm_set") && parm) {
           char *parm2 = NULL;
@@ -403,9 +410,51 @@ void loop() {
           }
           success=1;
         }
+
+        //
+        // allgemeine I2C-Kommunikation
+        //
+
+        else if((cmd == "i2c_write") && parm) {
+          char * ppt;
+
+          ppt = strtok(parm," ");
+          Wire.beginTransmission(atoi(ppt));
+          ppt=strtok(NULL, " ");
+                    
+          while(ppt!=NULL) {
+            Serial.println(ppt);
+            Wire.write(atoi(ppt));
+            ppt=strtok(NULL, " ");      
+          }
+          Wire.endTransmission(); 
+                 
+        }        
+
+        else if((cmd == "i2c_read") && parm) {
+          char * ppt;
+          uint8_t  i;
+          uint8_t  j;
+          
+          ppt = strtok(parm," ");
+          i=atoi(ppt);
+          ppt=strtok(NULL, " ");
+          j=atoi(ppt);
+          
+          Wire.requestFrom(i,j);
+          Serial.println("I2C read:");
+          while(Wire.available()) {
+            uint8_t ans = Wire.read();
+            Serial.println(ans);
+ 
+          }
+                 
+        }
         
+        
+        //
         // Abschließende Rückmeldung
-        
+        //
         if(success!=2) {
           Serial.println(success);
         }
