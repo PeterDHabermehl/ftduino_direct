@@ -1,5 +1,3 @@
-
-
 /*
  * ftduino-direct 
  * A ftduino sketch to provide direct control of the hw i/o
@@ -14,7 +12,7 @@
 
 Adafruit_PWMServoDriver pwm1 = Adafruit_PWMServoDriver(0x40);
 
-#define FTDUINODIRECTVERSION "1.3.1"
+#define FTDUINODIRECTVERSION "1.3.2"
 #define MAX_CMD 142
 #define BURGER 0xdeadbeef
 
@@ -423,12 +421,12 @@ void loop() {
           ppt=strtok(NULL, " ");
                     
           while(ppt!=NULL) {
-            Serial.println(ppt);
+            // Serial.println(ppt);
             Wire.write(atoi(ppt));
             ppt=strtok(NULL, " ");      
           }
           Wire.endTransmission(); 
-                 
+          success=1;       
         }        
 
         else if((cmd == "i2c_read") && parm) {
@@ -442,13 +440,14 @@ void loop() {
           j=atoi(ppt);
           
           Wire.requestFrom(i,j);
-          Serial.println("I2C read:");
+          // Serial.println("I2C read:");
           while(Wire.available()) {
             uint8_t ans = Wire.read();
-            Serial.println(ans);
- 
+            Serial.print(ans);
+            Serial.print(" ");
           }
-                 
+          Serial.println();
+          success=2;
         }
         
         
