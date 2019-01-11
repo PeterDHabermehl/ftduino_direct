@@ -3,6 +3,9 @@ An arduino sketch and Python3 library to access the ftDuino hardware
 
 ## What's new?
 
+**sketch v1.3.2 (2019-01-11):** I2CRead and I2CWrite commands, see below.
+
+
 **sketch v1.2 (2018-12-18):** added support for PCA9685 based I2C servo shields. See "Use" below for details.
 
 ## What is it?
@@ -63,15 +66,16 @@ You might execute all functions provided by [Till Harbaum's sketch library](http
 Connect a PCA9685 based I2C servo shield to ftDuino's I2C port.
 
 Only I2C address 0x40 supported, only one shield. pwm frequency is 60Hz fixed. 
-The new command to address a PWM port: **pwm_set "port no." "pulse high start" "pulse high end"**
+The new command to address a PWM port: **pwm_set \<channel\> \<pulse high start\> \<pulse high end\>**
 
 
 with
-    "port no."     Number of the pwm/servo port of the shield, starts at 0 up to num.ports-1, so 0..15 for 16 channels.
 
-    "pulse high start"  Start of the high pulse in x/4096, usually "0"
+    <channel>           Number of the pwm/servo port of the shield, starts at 0 up to num.ports-1, so 0..15 for 16 channels.
+
+    <pulse high start>  Start of the high pulse in x/4096, usually "0"
         
-    "pulse high end"    End of the high pulse in x/4096
+    <pulse high end>    End of the high pulse in x/4096
         
 
 As the servo shield resolves a pwm pulse in 12 bit and the high level of the pwm signal usually starts at 0, a duty cycle of 5% on channel 0 could be set like:
@@ -84,10 +88,22 @@ Accordingly 12.5%:
 
 To turn on a channel with 100%, issue
     
-    pwm_set "channel" 4096 0
+    pwm_set <channel> 4096 0
 
 to turn off
 
-    pwm_set "channel" 0 4096
+    pwm_set <channel> 0 4096
     
 **The command "pwm_halt" turns off all 16 channels at once.**
+
+## I2C communication
+To access the ftDuino I2C port, use
+
+    I2CWrite <device address> <data byte 0> .. <data byte 31>
+    
+    I2CRead <device address> <number of bytes to read>
+    
+where all parameters are expected to be space-separated 8bit unsigned integer numbers.
+
+I2CRead then returns the data also as a sequence of space-separated numbers.
+
