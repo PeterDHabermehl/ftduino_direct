@@ -12,7 +12,7 @@
 
 Adafruit_PWMServoDriver pwm1 = Adafruit_PWMServoDriver(0x40);
 
-#define FTDUINODIRECTVERSION "1.3.2"
+#define FTDUINODIRECTVERSION "1.3.3"
 #define MAX_CMD 142
 #define BURGER 0xdeadbeef
 
@@ -440,7 +440,7 @@ void loop() {
           j=atoi(ppt);
           
           Wire.requestFrom(i,j);
-          // Serial.println("I2C read:");
+          delay(10);
           while(Wire.available()) {
             uint8_t ans = Wire.read();
             Serial.print(ans);
