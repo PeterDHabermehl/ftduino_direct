@@ -38,10 +38,13 @@ FTDUINO_DIRECT_PYTHON_VERSION = __version__  # Kept for backward compatibility, 
 FTDUINO_VIRGIN_VIDPID = "1c40:0537"
 FTDUINO_VIDPID = "1c40:0538"
 
-__all__ = ["ftduino_scan", "ftduino_find_by_name", "ftduino", "getLibVersion"]
+__all__ = ["ftduino_scan", "ftduino_find_by_name", "ftduino"]
 
 
 def getLibVersion():  # Kept for backward compatibility, TODO: Remove, unpythonic
+    import warnings
+    warnings.warn('This function will be removed, use __version__ instead',
+                  DeprecationWarning)
     return __version__
     
 
@@ -117,6 +120,9 @@ class ftduino(object):
 
     def getDevice(self):
         #TODO: Remove, unpythonic, we can access ftduino directly
+        import warnings
+        warnings.warn('This function will be removed, use ftduino instead',
+                      DeprecationWarning)
         return self.ftduino
     
     def comm(self, command):
