@@ -31,7 +31,7 @@ import serial.tools.list_ports
 import time
 
 
-__version__ = "1.0.8"
+__version__ = "1.0.9"
 
 FTDUINO_DIRECT_PYTHON_VERSION = __version__  # Kept for backward compatibility, TODO: Remove, unpythonic
 
@@ -103,7 +103,7 @@ class ftduino(object):
         # Bei Angabe eines device-Pfades wird versucht, diesen ftduino zu
         # oeffnen, ansonsten wird der erste gefundene ftduino angesprochen
         try:
-            if not device:
+            if device is None:
                 devices = ftduino_scan()
                 if devices:
                     port = devices[0][0]
@@ -115,8 +115,6 @@ class ftduino(object):
                                              writeTimeout=0.1)
         except:
             pass
-        if self.ftduino is None:
-            raise ValueError('No ftDuino found.')
 
     def getDevice(self):
         #TODO: Remove, unpythonic, we can access ftduino directly
