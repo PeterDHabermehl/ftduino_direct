@@ -26,97 +26,112 @@
 #    myftd=ftduino_direct.ftduino()
 #    myftd.comm("motor M1 right 512")
 #
-
-
 import serial
 import serial.tools.list_ports
 import time
 
-FTDUINO_DIRECT_PYTHON_VERSION = "1.0.8"
 
-FTDUINO_VIRGIN_VIDPID="1c40:0537"
-FTDUINO_VIDPID="1c40:0538"
+__version__ = "1.0.9"
 
-__all__ = ["ftduino_scan", "ftduino_find_by_name", "ftduino", "getLibVersion"]
+FTDUINO_DIRECT_PYTHON_VERSION = __version__  # Kept for backward compatibility, TODO: Remove, unpythonic
 
-def getLibVersion():
-    return FTDUINO_DIRECT_PYTHON_VERSION
+FTDUINO_VIRGIN_VIDPID = "1c40:0537"
+FTDUINO_VIDPID = "1c40:0538"
+
+__all__ = ["ftduino_scan", "ftduino_find_by_name", "ftduino"]
+
+
+def getLibVersion():  # Kept for backward compatibility, TODO: Remove, unpythonic
+    import warnings
+    warnings.warn('This function will be removed, use __version__ instead',
+                  DeprecationWarning)
+    return __version__
     
 
 def ftduino_scan():
-    #   scannt nach ftduinos und gibt eine Liste zurueck, die den device-pfad und die vom ftduino zurueckgemeldete ID beinhaltet
-    #   [x][0] enthaelt den device-pfad, [x][1] die ID 
-    #
+    """Scannt nach ftduinos und gibt eine Liste zurueck, die den device-pfad und
+    die vom ftduino zurueckgemeldete ID beinhaltet
+
+       [x][0] enthaelt den device-pfad
+       [x][1] die ID
+    """
     devices = []
-    for dev in serial.tools.list_ports.grep("vid:pid="+FTDUINO_VIDPID):
+    for dev in serial.tools.list_ports.grep("vid:pid=" + FTDUINO_VIDPID):
         try:
             o = serial.Serial(dev[0], 115200, timeout=0.1, writeTimeout = 0.1)
             time.sleep(0.25)
             o.flushInput()
             o.flushOutput()
             o.write("ftduino_id_get\n".encode("utf-8"))
-            n=o.readline().decode("utf-8")[:-2]
+            n = o.readline().decode("utf-8")[:-2]
             o.close()
             devices.append([dev[0], n])
         except:
             devices.append([dev[0], ""])
-    for dev in serial.tools.list_ports.grep("vid:pid="+FTDUINO_VIRGIN_VIDPID):
+    for dev in serial.tools.list_ports.grep("vid:pid=" + FTDUINO_VIRGIN_VIDPID):
         try:
-            o = serial.Serial(dev[0], 115200, timeout=0.1, writeTimeout = 0.1)
+            o = serial.Serial(dev[0], 115200, timeout=0.1, writeTimeout=0.1)
             time.sleep(0.25)
             o.flushInput()
             o.flushOutput()
             o.write("ftduino_id_get\n".encode("utf-8"))
-            n=o.readline().decode("utf-8")[:-2]
+            n = o.readline().decode("utf-8")[:-2]
             o.close()
             devices.append([dev[0], n])
         except:
             devices.append([dev[0], ""])
-            
     return devices
         
+
 def ftduino_find_by_name(duino):
-    #   sucht nach einem ftduino mit angegebenem Namen und gibt im Erfolgsfall den device-pfad zurueck
-    #   der device-Pfad kann beim Erzeugen eines ftduino-Objekts angegeben werden, um gezielt einen 
-    #   bestimmten ftduino anzusprechen.
-    d=ftduino_scan()
+    """Sucht nach einem ftduino mit angegebenem Namen und gibt im Erfolgsfall
+    den device-pfad zurueck.
+
+    Der device-Pfad kann beim Erzeugen eines ftduino-Objekts angegeben werden,
+    um gezielt einen bestimmten ftduino anzusprechen.
+    """
     try:
         return next(c for c in ftduino_scan() if c[1] == duino)[0]
     except:
         return None
-    
+
+
 class ftduino(object):
 
     def __init__(self, device=None):
-        self.ftduino=None
-        
-        # bei Angabe eines device-Pfades wird versucht, diesen ftduino zu oeffnen
-        # ansonsten wird der erste gefundene ftduino angesprochen
-        
+        self.ftduino = None
+        # Bei Angabe eines device-Pfades wird versucht, diesen ftduino zu
+        # oeffnen, ansonsten wird der erste gefundene ftduino angesprochen
         try:
-            if device==None:
-                liste=ftduino_scan()
-                port=liste[0][0]
-                if liste!=None:
-                    self.ftduino = serial.Serial(port, 115200, timeout=0.1, writeTimeout = 0.1)
-                    time.sleep(0.5) #give the connection a second to settle
+            if device is None:
+                devices = ftduino_scan()
+                if devices:
+                    port = devices[0][0]
+                    self.ftduino = serial.Serial(port, 115200, timeout=0.1,
+                                                 writeTimeout=0.1)
+                    time.sleep(0.5) # give the connection a second to settle
             else:
-                self.ftduino = serial.Serial(device, 115200, timeout=0.1, writeTimeout = 0.1)
+                self.ftduino = serial.Serial(device, 115200, timeout=0.1,
+                                             writeTimeout=0.1)
         except:
             pass
 
     def getDevice(self):
+        #TODO: Remove, unpythonic, we can access ftduino directly
+        import warnings
+        warnings.warn('This function will be removed, use ftduino instead',
+                      DeprecationWarning)
         return self.ftduino
     
     def comm(self, command):
         try:
-            command=command+"\n"
+            command += "\n"
             self.ftduino.flushInput()
             self.ftduino.flushOutput()
             self.ftduino.write(command.encode("utf-8"))
             data = self.ftduino.readline()
             if data:
-                if len(data.decode("utf-8"))>2: return data.decode("utf-8")[:-2]
+                if len(data.decode("utf-8")) > 2: return data.decode("utf-8")[:-2]
                 return "Fail"
             else: 
                 return "Fail"
@@ -125,4 +140,3 @@ class ftduino(object):
     
     def close(self):
         self.ftduino.close()
-    
