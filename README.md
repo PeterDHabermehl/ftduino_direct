@@ -23,6 +23,9 @@ If you use the ftDuino in conjunction with a fischertechnik TXT controller runni
 **Alternately and without a device running the community firmware:**
 
 *First*, follow the instructions found at the [ftDuino](https://ftduino.de) homepage to install the Arduino IDE and set it up to be used with the ftduino.
+Also install the Adafruit PCA9685 PWM Servo Driver Library within the IDE:
+Sketch -> Include Library -> Manage Library
+Search for "adafruit servo" -> Install "Adafruit PWM Servo Driver Library"
 
 *Second*, [download](https://github.com/PeterDHabermehl/ftduino_direct/raw/master/ftduino_direct/ftduino_direct.ino) the ftduino_direct.ino sketch.
 
