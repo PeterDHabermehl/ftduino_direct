@@ -50,6 +50,8 @@ You might open the Arduino IDE serial console and issue the command "LED_set 1" 
 
 See test.py on how to use...
 
+**Please be aware that ftduino_direct uses a pwm range of 0..512, as for the ft TXT controller, as opposed to the ftduino internal range of 0..64.** 
+
 You might execute all functions provided by [Till Harbaum's sketch library](https://github.com/harbaum/ftduino/tree/master/ftduino/libraries/Ftduino) using the .comm method of ftduino_direct.py, namely:
     
     void input_set_mode(uint8_t ch, uint8_t mode);
